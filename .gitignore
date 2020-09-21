@@ -1,5 +1,6 @@
 # Mac OS files
 .DS_Store
+Jarvis.json
 
 #setup.py
 setup.py
