@@ -1,6 +1,6 @@
 # Mac OS files
 .DS_Store
-Jarvis.json
+jarvis.json
 
 #setup.py
 setup.py
@@ -29,6 +29,7 @@ lib/
 lib64/
 parts/
 sdist/
+tests/
 var/
 wheels/
 *.egg-info/

@@ -1,45 +1,34 @@
-import discord
-from discord.ext import commands
-import wikipedia, os
-from chatbot import Chat, register_call
-import server
-prefix = ""
-TOKEN = os.getenv("DISCORD_TOKEN")
-bot = commands.Bot(command_prefix = prefix)
-@register_call("whoIs")
-def who_is(query, session_id="general"):
-    try:
-        return wikipedia.summary(query)
-    except Exception:
-        for new_query in wikipedia.search(query):
-            try:
-                return wikipedia.summary(new_query)
-            except Exception:
-                pass
-    return f"I don't know about {query}"
-template_file_path = os.path.join(os.path.dirname(os.path.abspath(__file__)),"chatbot","chatbot.template")
-chat=Chat(template_file_path)
-@bot.event
+import json, apiai, discord, asyncio, os, server
+
+client = discord.Client()
+token = os.getenv("DISCORD_TOKEN")
+client_token = os.getenv("DF_TOKEN")
+ai = apiai.ApiAI(client_token)
+
+
+@client.event
 async def on_ready():
-    print(f"looged in as {bot.user.name}({bot.user.id})")
-@bot.command(pass_context = True, aliases=["@J.A.R.V.I.S#5351", "J.A.R.V.I.S.", "J.A.R.V.I.S", "JARVIS", "!"])
-async def jarvis(ctx,*,message):
-    result = chat.respond(message)
-    if(len(result)<=2048):
-        embed=discord.Embed(title="J.A.R.V.I.S.", description = result, color = (0xF48D1))
-        await ctx.send(embed=embed)
-    else:
-        embedList = []
-        n=2048
-        embedList = [result[i:i+n] for i in range(0, len(result), n)]
-        for num, item in enumerate(embedList, start = 1):
-            if(num == 1):
-                embed = discord.Embed(title="J.A.R.V.I.S.", description = item, color = (0xF48D1))
-                embed.set_footer(text=f"Page {num}")
-                await ctx.send(embed = embed)
-            else:
-                embed = discord.Embed(description = item, color = (0xF48D1))
-                embed.set_footer(text = f"Page {num}")
-                await ctx.send(embed = embed)
+    print(f'logged in as {client.user.name}({client.user.id})')
+
+@client.event
+async def on_message(message):
+    if not message.author.bot:
+        try:
+            if message.content.startswith("$"):
+                msg = message.content.split("$", 1)
+                request = ai.text_request()
+                request.query = msg
+
+                response = json.loads(request.getresponse().read()) # Get the json from dialogflow
+                print(response)
+                
+                result = response['result'] # Get the actual plaintext reply
+                action = result.get('action') # Get the action (this can be helpful if you want to make the bot able to run commands when asked. For example, telling the bot to send help could make it DM a user with a help command)
+
+                await message.channel.send(response['result'], ['fulfillment'], ['speech']) # Send the message and tag the message author
+
+        except KeyError: # If the bot gets input dialogflow can't handle, it will raise a KeyError
+            await message.channel.send("KeyError!")
+
 server.server()
-bot.run(TOKEN)
+client.run(token)
