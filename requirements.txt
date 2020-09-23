@@ -1,4 +1,5 @@
 discord.py
 flask
 python-dotenv
-wikipedia
+apiai
+dialogflow
