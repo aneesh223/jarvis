@@ -1,4 +1,4 @@
-import discord, wolframalpha, os
+import discord, wolframalpha, os, server
 from discord.ext import commands
 client = wolframalpha.Client(os.getenv("WA_TOKEN"))
 prefix = "$"
@@ -12,4 +12,5 @@ async def on_ready():
 async def _(ctx, *, query):
     await ctx.send(str(next(client.query(query).results).text))
 
+server.server()
 bot.run(os.getenv("DISCORD_TOKEN"))
