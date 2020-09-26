@@ -11,10 +11,7 @@ async def on_ready():
 
 @bot.command(aliases=["J.A.R.V.I.S.", "J.a.r.v.i.s.", "j.a.r.v.i.s.", "JARVIS", "Jarvis", "jarvis", ""])
 async def _(ctx, *, query):
-    for pod in client.query(query).pods:
-        for sub in pod.subpods:
-            await ctx.send(sub.text)
-#    await ctx.send(str(next(client.query(query).results).text))
+    await ctx.send(str(next(client.query(query).results).text))
 
 server.server()
 bot.run(os.getenv("DISCORD_TOKEN"))
