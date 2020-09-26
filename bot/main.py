@@ -13,7 +13,7 @@ async def on_ready():
 async def _(ctx, *, query):
     for pod in client.query(query).pods:
         for sub in pod.subpods:
-            print(sub.text)
+            await ctx.send(sub.text)
 #    await ctx.send(str(next(client.query(query).results).text))
 
 server.server()
