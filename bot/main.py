@@ -12,8 +12,9 @@ async def on_ready():
 @bot.command(aliases=["J.A.R.V.I.S.", "J.a.r.v.i.s.", "j.a.r.v.i.s.", "JARVIS", "Jarvis", "jarvis", ""])
 async def _(ctx, *, query):
     for pod in client.query(query).pods:
-        for sub in pod.subpods:
-            await ctx.send(sub.text)
+        embed = discord.Embed(color = discord.Color.teal())
+        embed.set_image(url = pod)
+        await ctx.send(embed = embed)
 
 server.server()
 bot.run(os.getenv("DISCORD_TOKEN"))
