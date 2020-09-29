@@ -1,7 +1,7 @@
 import discord, wolframalpha, os, server
 from discord.ext import commands
 client = wolframalpha.Client(os.getenv("WA_TOKEN"))
-prefix = "$"
+prefix = "j!"
 bot = commands.Bot(command_prefix=prefix)
 
 @bot.event
