@@ -11,7 +11,10 @@ async def on_ready():
 
 @bot.command(aliases=["J.A.R.V.I.S.", "J.a.r.v.i.s.", "j.a.r.v.i.s.", "JARVIS", "Jarvis", "jarvis", ""])
 async def _(ctx, *, query):
-    await ctx.send(str(next(client.query(query).results).text))
+    if str(next(client.query(query).results).text) == "My name is Wolfram|Alpha."
+      await ctx.send("My name is J.A.R.V.I.S.")
+    else
+      await ctx.send(str(next(client.query(query).results).text))
 
 server.server()
 bot.run(os.getenv("DISCORD_TOKEN"))
