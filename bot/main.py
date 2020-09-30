@@ -10,7 +10,7 @@ def get_prefix(client, message):
 
     # Allow users to @mention the bot instead of using a prefix when using a command. Also optional
     # Do `return prefixes` if u don't want to allow mentions instead of prefix.
-    return commands.when_mentioned or (*prefixes)(client, message)
+    return commands.when_mentioned or prefixes
 prefix = get_prefix
 bot = commands.Bot(command_prefix=prefix, case_insensitive=True)
 
