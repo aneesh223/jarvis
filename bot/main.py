@@ -11,7 +11,7 @@ def get_prefix(client, message):
     return commands.when_mentioned_or(*prefixes)(client, message)
 
 prefix = "j!"
-bot = commands.Bot(command_prefix=prefix)
+bot = commands.Bot(command_prefix=prefix, case_insensitive=True)
 
 @bot.event
 async def on_ready():
