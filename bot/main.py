@@ -23,9 +23,11 @@ async def on_ready():
 @bot.command(aliases=["J.A.R.V.I.S.", "J.a.r.v.i.s.", "j.a.r.v.i.s.", "JARVIS", "Jarvis", "jarvis", ""])
 async def _(ctx, *, query):
     for pod in client.query(query).pods:
-        embed = discord.Embed(color = discord.Color.teal())
-        embed.set_image(url = pod)
-        await ctx.send(embed = embed)
+        for sub in pod.subpods:
+            if str(sub.text) == "My name is Wolfram|Alpha.":
+                await ctx.send("My name is J.A.R.V.I.S.")
+            else:
+                await ctx.send(str(sub.text))
 
 server.server()
 bot.run(os.getenv("DISCORD_TOKEN"))
